@@ -1,6 +1,6 @@
-# Ligue des Apprenants - Frontend
+# Ligue des Alternants - Frontend
 
-Application frontend pour la Ligue des Apprenants, construite avec Astro, React, et Tailwind CSS.
+Site pour la Ligue des Alternants, construite avec Astro, React, et Tailwind CSS.
 
 ## 🚀 Stack Technique
 
@@ -61,6 +61,50 @@ pnpm format
 pnpm format:check
 ```
 
+## 🎯 Git Hooks & Qualité du Code
+
+Ce projet utilise **Husky**, **lint-staged** et **commitlint** pour garantir la qualité du code.
+
+### Hooks Automatiques
+
+#### Pre-commit
+
+Avant chaque commit, **lint-staged** exécute automatiquement :
+
+- ✅ **ESLint** sur les fichiers `.js`, `.ts`, `.tsx`, `.astro`
+- ✅ **Prettier** sur tous les fichiers stagés
+- ✅ Correction automatique des erreurs
+
+#### Commit-msg
+
+Les messages de commit doivent suivre la convention [Conventional Commits](https://www.conventionalcommits.org/).
+
+**Format requis :**
+
+```
+<type>(<scope>): <subject>
+```
+
+**Exemples valides :**
+
+```bash
+feat: add user authentication
+fix(ui): correct button alignment
+docs: update installation guide
+chore(deps): upgrade dependencies
+```
+
+**Types autorisés :** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
+
+📖 Voir [COMMIT_CONVENTIONS.md](./.github/COMMIT_CONVENTIONS.md) pour plus de détails.
+
+### Désactiver temporairement les hooks (non recommandé)
+
+```bash
+# Bypass pre-commit et commit-msg
+git commit --no-verify -m "message"
+```
+
 ## 🔧 Configuration VS Code
 
 Le projet inclut des configurations VS Code recommandées :
@@ -73,5 +117,3 @@ Lors de l'ouverture du projet, VS Code proposera d'installer :
 - ESLint
 - Prettier
 - Tailwind CSS IntelliSense
-- EditorConfig
-- Et autres extensions utiles

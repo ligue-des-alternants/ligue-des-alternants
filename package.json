@@ -10,7 +10,8 @@
     "format": "prettier --write --cache .",
     "format:check": "prettier --check --cache .",
     "lint": "eslint --cache",
-    "lint:fix": "eslint --cache --fix"
+    "lint:fix": "eslint --cache --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.7",
@@ -29,6 +30,9 @@
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/types": "^20.0.0",
     "@eslint/js": "^9.38.0",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
@@ -37,6 +41,8 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.4",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.1",
