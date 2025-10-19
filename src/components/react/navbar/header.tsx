@@ -1,8 +1,8 @@
-import { Menu } from 'lucide-react';
 import { useState } from 'react';
 
-import MobileMenu from './mobile-menu';
+import { Menu } from 'lucide-react';
 
+import MobileMenu from './mobile-menu';
 import { navigation } from './navigation';
 
 export default function Header() {
