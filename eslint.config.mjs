@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import tsParser from '@typescript-eslint/parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
@@ -62,6 +63,13 @@ export default tseslint.config([
   ...eslintPluginAstro.configs.recommended,
   {
     files: ['**/*.astro'],
+    languageOptions: {
+      parser: eslintPluginAstro.parser,
+      parserOptions: {
+        parser: tsParser,
+        extraFileExtensions: ['.astro'],
+      },
+    },
     rules: {
       'astro/no-set-html-directive': 'error',
       'astro/no-unused-css-selector': 'warn',
@@ -70,6 +78,5 @@ export default tseslint.config([
   },
 
   // Disable rules that conflict with Prettier
-  // MUST be last
   eslintConfigPrettier,
 ]);

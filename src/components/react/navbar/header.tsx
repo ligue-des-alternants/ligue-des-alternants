@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Menu } from 'lucide-react';
 
+import { navigation } from './data';
 import MobileMenu from './mobile-menu';
-import { navigation } from './navigation';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

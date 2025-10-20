@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { X } from 'lucide-react';
 
-import { navigation } from './navigation';
+import { navigation } from './data';
 
 interface MobileMenuProps {
   onCloseMenu: () => void;

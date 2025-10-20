@@ -1,21 +1,9 @@
----
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const {
-  title = 'Actualités',
-  description = "Restez informé des dernières nouvelles de l'association et du site.",
-} = Astro.props;
----
-
 <header class="mx-auto max-w-2xl lg:mx-0">
   <h2 class="text-foreground text-4xl font-semibold tracking-tight text-pretty sm:text-5xl">
-    {title}
+    Actualités'
   </h2>
 
   <p class="text-muted-foreground mt-2 text-lg/8">
-    {description}
+    Restez informé des dernières nouvelles de l'association et du site.
   </p>
 </header>

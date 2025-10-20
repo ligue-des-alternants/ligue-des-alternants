@@ -1,12 +1,12 @@
-import InstagramIcon from '@/components/react/icons/instagram-icon';
-import TikTokIcon from '@/components/react/icons/tiktok-icon';
-import Xicon from '@/components/react/icons/x-icon';
+import InstagramIcon from './icons/instagram-icon.astro';
+import TikTokIcon from './icons/tiktok-icon.astro';
+import XIcon from './icons/x-icon.astro';
 
 export const socialLinks = [
   {
     name: 'Facebook',
     url: 'https://x.com/LigueAlternants',
-    icon: Xicon,
+    icon: XIcon,
   },
   {
     name: 'Instagram',
