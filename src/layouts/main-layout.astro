@@ -1,7 +1,7 @@
 ---
+import Footer from '@/components/astro/footer/index.astro';
 import Head from '@/components/astro/head.astro';
 
-import Footer from '@/components/astro/footer/index.astro';
 import Header from '@/components/react/navbar/header';
 
 import '../styles/global.css';
@@ -17,7 +17,7 @@ const { title, description } = Astro.props as HeadProps;
     <Head title={title} description={description} />
   </head>
   <body class="grid min-h-dvh grid-rows-[1fr_auto]">
-    <Header client:idle />
+    <Header currentPath={Astro.url.pathname} client:idle />
 
     <main>
       <slot />

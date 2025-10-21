@@ -5,7 +5,11 @@ import { Menu } from 'lucide-react';
 import { navigation } from './data';
 import MobileMenu from './mobile-menu';
 
-export default function Header() {
+interface HeaderProps {
+  currentPath: string;
+}
+
+export default function Header({ currentPath }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleOpenMenu = () => {
@@ -42,7 +46,7 @@ export default function Header() {
           </button>
         </div>
 
-        <NavItems />
+        <NavItems currentPath={currentPath} />
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
 
@@ -52,9 +56,7 @@ export default function Header() {
   );
 }
 
-const NavItems = () => {
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
-
+const NavItems = ({ currentPath }: { currentPath: string }) => {
   return (
     <div className="hidden lg:flex lg:gap-x-6">
       {navigation.map(({ href, name }) => {
