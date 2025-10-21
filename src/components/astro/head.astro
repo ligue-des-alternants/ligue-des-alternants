@@ -1,9 +1,10 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+
 export interface HeadProps {
   title: string;
   description: string;
 }
-
 const { title, description } = Astro.props;
 ---
 
@@ -34,3 +35,5 @@ const { title, description } = Astro.props;
 
 <!-- Canonical URL -->
 <link rel="canonical" href={Astro.url} />
+
+<ClientRouter />

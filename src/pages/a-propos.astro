@@ -1,0 +1,30 @@
+---
+import AboutAssociation from '@/components/astro/about/about-association.astro';
+import JoinSection from '@/components/astro/about/join-section.astro';
+import ObjectivesList from '@/components/astro/about/objectives-list.astro';
+import Background from '@/components/astro/background.astro';
+
+import MainLayout from '@/layouts/main-layout.astro';
+
+const title = 'Ligue des Alternants | À propos';
+const description =
+  "Découvrez la Ligue des Alternants, l'association qui valorise et accompagne les étudiants en alternance en France.";
+---
+
+<MainLayout title={title} description={description}>
+  <div class="bg-background relative isolate overflow-hidden py-32 sm:py-40">
+    <Background />
+
+    <div class="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+      <div class="max-w-4xl">
+        <AboutAssociation />
+      </div>
+
+      <section class="mt-20">
+        <ObjectivesList />
+      </section>
+
+      <JoinSection />
+    </div>
+  </div>
+</MainLayout>

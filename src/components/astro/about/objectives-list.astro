@@ -1,0 +1,26 @@
+---
+import { CircleCheck } from '@lucide/astro';
+
+const objectives = [
+  'Représenter les alternants auprès des institutions et du public.',
+  "Créer un réseau national d'entraide et de partage d'expérience.",
+  'Fournir des outils utiles.',
+  'Partenariats avec des entreprises et établissements de formation.',
+  'Animation de la communauté sur les réseaux sociaux.',
+];
+---
+
+<section>
+  <h2 class="text-foreground text-2xl font-semibold tracking-tight text-pretty">Nos objectifs</h2>
+
+  <ul class="text-secondary-foreground mt-8 max-w-xl">
+    {
+      objectives.map((objective) => (
+        <li class="mb-8 flex gap-x-3 text-base/7">
+          <CircleCheck class="text-primary mt-1 size-6 flex-none" />
+          <span>{objective}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
