@@ -114,7 +114,24 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  h1 {
+    @apply text-foreground text-5xl font-semibold tracking-tight text-balance sm:text-7xl;
+  }
+
+  a {
+    @apply text-foreground text-sm/6 font-semibold;
+  }
+}
+
+@utility container {
+  @apply mx-auto w-full max-w-7xl px-6 lg:px-8;
+}
+
+@utility page {
+  @apply bg-background relative isolate overflow-hidden py-32 sm:py-40;
 }

@@ -1,169 +1,64 @@
 ---
-import { ListCheck, Phone, ShieldCheck } from '@lucide/astro';
+import { contacts, responsibilities, rights } from '@/data';
 
-import Background from '@/components/astro/background.astro';
+import Header from '@/components/astro/our-rights-and-responsibilities/header.astro';
+import RessourcesList from '@/components/astro/our-rights-and-responsibilities/ressources-list.astro';
 
+import ItemList from '@/components/astro/ui/item-list/index.astro';
+import Section from '@/components/astro/ui/section.astro';
+
+import CardSection from '@/components/astro/ui/card-section.astro';
+import Background from '@/layouts/background.astro';
 import MainLayout from '@/layouts/main-layout.astro';
 
 const title = 'Ligue des Alternants | Nos droits et devoirs en alternance';
 const description =
   'Droits et devoirs en alternance : découvrez les aspects légaux, obligations contractuelles et conseils pour réussir votre parcours avec la Ligue des Alternants.';
-
-const rights = [
-  { title: 'Rémunération', description: 'Salaire minimum selon la loi.' },
-  { title: 'Congés payés', description: '2,5 jours/mois.' },
-  { title: 'Temps de travail', description: 'Respect du code du travail.' },
-  { title: 'Encadrement', description: 'Tuteur dédié.' },
-  { title: 'Protection sociale', description: 'Sécurité sociale, retraite…' },
-];
-
-const responsibilities = [
-  { title: 'Assiduité', description: 'Présence en entreprise et en formation.' },
-  { title: 'Suivi des cours', description: 'Examens, contrôles continus.' },
-  { title: 'Professionnalisme', description: 'Respect du règlement.' },
-  { title: 'Discrétion', description: 'Confidentialité des infos internes.' },
-];
-
-const contacts = [
-  { title: 'Votre tuteur ou RH', description: 'Premier point de contact en entreprise.' },
-  { title: 'Le centre de formation', description: 'Pour les questions pédagogiques.' },
-  { title: 'Inspection du travail', description: 'En cas de litige grave.' },
-];
 ---
 
 <MainLayout title={title} description={description}>
-  <div class="bg-background relative isolate overflow-hidden py-32 sm:py-40">
+  <div class="page">
     <Background />
 
-    <div class="text-muted-foreground mx-auto max-w-2xl px-6 text-base/7 lg:max-w-7xl lg:px-8">
-      <div class="max-w-3xl">
-        <div>
-          <h1 class="text-foreground text-4xl font-semibold tracking-tight text-pretty sm:text-5xl">
-            Nos droits et devoirs en alternance
-          </h1>
-        </div>
-      </div>
+    <div class="text-muted-foreground container max-w-2xl text-base/7 lg:max-w-7xl">
+      <Header />
 
-      <section class="mt-20">
-        <h2 class="text-foreground text-2xl font-semibold tracking-tight text-pretty">
-          Les droits de l'alternant
-        </h2>
-
+      <Section title="Les droits de l'alternant">
         <p class="mt-6">
           En tant qu'alternant ou apprenti, vous êtes salarié de l'entreprise sous contrat
           d'alternance. Vous bénéficiez donc de droits identiques à ceux des autres employés, tout
           en suivant une formation professionnelle :
         </p>
 
-        <ul class="mt-8 max-w-xl space-y-8">
-          {
-            rights.map(({ title, description }) => (
-              <li class="flex gap-x-3">
-                <ShieldCheck class="text-primary h-[1lh] w-6 flex-none" />
-                <span>
-                  <strong class="text-foreground font-semibold">{title}.</strong>
-                  {description}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+        <ItemList items={rights} />
+      </Section>
 
-      <section class="mt-20">
-        <h2 class="text-foreground text-2xl font-semibold tracking-tight text-pretty">
-          Les devoirs de l'alternant
-        </h2>
-
+      <Section title="Les devoirs de l'alternant">
         <p class="mt-6">
           L'alternance est un engagement professionnel et personnel. Voici les règles à suivre pour
           réussir votre parcours :
         </p>
 
-        <ul class="mt-8 max-w-xl space-y-8">
-          {
-            responsibilities.map(({ title, description }) => (
-              <li class="flex gap-x-3">
-                <ListCheck class="text-primary h-[1lh] w-6 flex-none" />
-                <span>
-                  <strong class="text-foreground font-semibold">{title}.</strong>
-                  {description}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+        <ItemList items={responsibilities} />
+      </Section>
 
-      <section class="mt-20">
-        <h2 class="text-foreground text-2xl font-semibold tracking-tight text-pretty">
-          En cas de problème
-        </h2>
-
+      <Section title="En cas de problème">
         <p class="mt-6">Voici qui contacter en cas de difficulté :</p>
 
-        <ul class="mt-8 max-w-xl space-y-8">
-          {
-            contacts.map(({ title, description }) => (
-              <li class="flex gap-x-3">
-                <Phone class="text-primary h-[1lh] w-6 flex-none" />
-                <span>
-                  <strong class="text-foreground font-semibold">{title}.</strong>
-                  {description}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+        <ItemList items={contacts} />
+      </Section>
 
-      <section class="mt-20">
-        <h2 class="text-foreground text-2xl font-semibold tracking-tight text-pretty">
-          Ressources officielles
-        </h2>
-
+      <Section title="Ressources officielles">
         <p class="mt-6">Pour en savoir plus :</p>
 
-        <ul class="mt-8 max-w-xl space-y-8">
-          <li>
-            <a
-              href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2918"
-              class="text-primary hover:text-primary/60 font-semibold"
-              >Service Public - Contrat d'apprentissage</a
-            >
-          </li>
+        <RessourcesList />
+      </Section>
 
-          <li>
-            <a
-              href="https://www.alternance.emploi.gouv.fr/accueil"
-              class="text-primary hover:text-primary/60 font-semibold"
-              >Ministère du Travail - Portail de l'alternance</a
-            >
-          </li>
-
-          <li>
-            <a
-              href="https://www.alternance.emploi.gouv.fr/explorer-lalternance"
-              class="text-primary hover:text-primary/60 font-semibold">Explorer l'alternance</a
-            >
-          </li>
-        </ul>
-      </section>
-
-      <section class="mt-32">
-        <div
-          class="bg-background ring-border mx-auto max-w-2xl rounded-3xl px-6 py-16 shadow-lg ring sm:p-8 lg:mx-0 lg:max-w-none lg:py-20 xl:px-20"
-        >
-          <h2 class="text-foreground text-4xl font-semibold tracking-tight text-pretty sm:text-5xl">
-            Conclusion
-          </h2>
-
-          <p class="text-muted-foreground mt-6 text-lg/8 text-pretty">
-            L'alternance repose sur un engagement mutuel. Connaître vos droits et devoirs, c'est
-            avancer sereinement vers votre avenir professionnel !
-          </p>
-        </div>
-      </section>
+      <CardSection
+        title="Conclusion"
+        description="L'alternance repose sur un engagement mutuel. Connaître vos droits et devoirs, c'est avancer sereinement vers votre avenir professionnel !"
+        class="mt-32"
+      />
     </div>
   </div>
 </MainLayout>

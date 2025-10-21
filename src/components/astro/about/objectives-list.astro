@@ -1,26 +1,45 @@
 ---
-import { CircleCheck } from '@lucide/astro';
+import { Activity } from '@lucide/astro';
+
+import Section from '../ui/section.astro';
 
 const objectives = [
-  'Représenter les alternants auprès des institutions et du public.',
-  "Créer un réseau national d'entraide et de partage d'expérience.",
-  'Fournir des outils utiles.',
-  'Partenariats avec des entreprises et établissements de formation.',
-  'Animation de la communauté sur les réseaux sociaux.',
+  {
+    title: 'Représentation',
+    description: 'Les alternants sont représentés auprès des institutions et du public.',
+  },
+  {
+    title: 'Réseau national',
+    description: "Un réseau national favorise l'entraide et le partage d'expérience.",
+  },
+  {
+    title: 'Outils',
+    description: 'Des outils pratiques et utiles sont fournis aux alternants.',
+  },
+  {
+    title: 'Partenariats',
+    description:
+      'Des partenariats sont établis avec des entreprises et établissements de formation.',
+  },
+  {
+    title: 'Animation',
+    description: 'La communauté est animée régulièrement sur les réseaux sociaux.',
+  },
 ];
 ---
 
-<section>
-  <h2 class="text-foreground text-2xl font-semibold tracking-tight text-pretty">Nos objectifs</h2>
-
-  <ul class="text-secondary-foreground mt-8 max-w-xl">
+<Section title="Nos objectifs">
+  <ul class="text-secondary-foreground mt-8 max-w-xl space-y-8">
     {
-      objectives.map((objective) => (
-        <li class="mb-8 flex gap-x-3 text-base/7">
-          <CircleCheck class="text-primary h-[1lh] w-6 flex-none" />
-          <span>{objective}</span>
+      objectives.map(({ title, description }) => (
+        <li class="flex gap-x-3 text-base/7">
+          <Activity class="text-primary h-[1lh] w-6 flex-none" />
+          <span>
+            <strong class="text-foreground font-semibold">{title}.</strong>
+            {description}
+          </span>
         </li>
       ))
     }
   </ul>
-</section>
+</Section>

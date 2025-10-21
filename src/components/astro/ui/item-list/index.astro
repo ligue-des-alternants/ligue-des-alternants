@@ -1,0 +1,16 @@
+---
+import Item from './item.astro';
+
+import type { Item as ItemType } from './types';
+
+interface Props {
+  items: ItemType[];
+  Icon?: (props: { class?: string }) => unknown;
+}
+
+const { items, Icon: defaultIcon } = Astro.props;
+---
+
+<ul class="mt-8 max-w-xl space-y-8">
+  {items.map((item) => <Item {...item} Icon={item.Icon || defaultIcon} />)}
+</ul>

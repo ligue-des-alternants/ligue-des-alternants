@@ -1,9 +1,9 @@
 ---
 import AboutAssociation from '@/components/astro/about/about-association.astro';
-import JoinSection from '@/components/astro/about/join-section.astro';
-import ObjectivesList from '@/components/astro/about/objectives-list.astro';
-import Background from '@/components/astro/background.astro';
+import ObjectivesListSection from '@/components/astro/about/objectives-list.astro';
+import CardSection from '@/components/astro/ui/card-section.astro';
 
+import Background from '@/layouts/background.astro';
 import MainLayout from '@/layouts/main-layout.astro';
 
 const title = 'Ligue des Alternants | À propos';
@@ -12,19 +12,18 @@ const description =
 ---
 
 <MainLayout title={title} description={description}>
-  <div class="bg-background relative isolate overflow-hidden py-32 sm:py-40">
+  <div class="page">
     <Background />
 
-    <div class="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-      <div class="max-w-4xl">
-        <AboutAssociation />
-      </div>
-
-      <section class="mt-20">
-        <ObjectivesList />
-      </section>
-
-      <JoinSection />
+    <div class="container">
+      <AboutAssociation />
+      <ObjectivesListSection />
+      <CardSection
+        title="Rejoindre la ligue"
+        description="Que vous soyez étudiant, formateur, employeur ou simplement curieux, vous pouvez nous rejoindre pour contribuer à faire grandir le mouvement."
+        linkHref="#"
+        linkText="Participer à l'aventure"
+      />
     </div>
   </div>
 </MainLayout>

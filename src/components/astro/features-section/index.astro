@@ -1,7 +1,5 @@
 ---
-import { features } from './data';
-
-import FeatureItem from './feature-item.astro';
+import FeatureItemList from './feature-item-list.astro';
 import FeaturesHeader from './features-header.astro';
 ---
 
@@ -10,15 +8,7 @@ import FeaturesHeader from './features-header.astro';
     <FeaturesHeader />
 
     <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-      <dl class="grid max-w-xl gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-        {
-          features.map((feature) => (
-            <FeatureItem title={feature.title} description={feature.description}>
-              <feature.Icon slot="icon" class="size-6" aria-hidden="true" />
-            </FeatureItem>
-          ))
-        }
-      </dl>
+      <FeatureItemList />
     </div>
   </div>
 </section>
