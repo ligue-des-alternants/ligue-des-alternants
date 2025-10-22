@@ -1,0 +1,84 @@
+---
+import PageHeader from '@/components/astro/ui/page-header.astro';
+import Section from '@/components/astro/ui/section.astro';
+
+import Background from '@/layouts/background.astro';
+import MainLayout from '@/layouts/main-layout.astro';
+
+const title = "Ligue des Alternants | Taxe d'apprentissage";
+const description =
+  "Informez-vous sur la taxe d'apprentissage, son fonctionnement, et comment elle soutient la formation en alternance.";
+---
+
+<MainLayout title={title} description={description}>
+  <div class="page">
+    <Background />
+
+    <div class="text-muted-foreground container max-w-2xl text-base/7 lg:max-w-7xl">
+      <PageHeader title="Tout savoir sur la taxe d’apprentissage" />
+
+      <Section title="Objectif de la taxe">
+        <p class="mt-6 max-w-3xl">
+          La taxe d'apprentissage est un impôt versé par les entreprises pour financer
+          l'apprentissage ainsi que les formations technologiques et professionnelles.
+        </p>
+      </Section>
+
+      <Section title="Taux et calcul">
+        <div class="max-w-3xl">
+          <ul class="mt-8 max-w-xl space-y-4 pl-4">
+            <li class="list-disc">
+              <strong class="text-foreground font-semibold"
+                >Taux général : 0,68 % de la masse salariale</strong
+              > (0,44 % en Alsace-Moselle).
+            </li>
+
+            <li class="list-disc">
+              <strong class="text-foreground font-semibold">Fraction principale</strong> (0,59 %) : destinée
+              à l'apprentissage.
+            </li>
+
+            <li class="list-disc">
+              <strong class="text-foreground font-semibold">Solde</strong> (0,09 %) : destiné aux formations
+              hors apprentissage.
+            </li>
+          </ul>
+        </div>
+      </Section>
+
+      <Section title="Base de calcul & exonérations">
+        <p class="mt-6 max-w-3xl">
+          La base correspond à la masse salariale du mois précédent (salaires, avantages en nature,
+          primes, etc.). Exonération possible si :
+        </p>
+
+        <ul class="mt-8 max-w-xl space-y-4 pl-4">
+          <li class="list-disc">L'entreprise emploie au moins un apprenti.</li>
+          <li class="list-disc">Et que la masse salariale est ≤ 6 x SMIC mensuel.</li>
+        </ul>
+      </Section>
+
+      <Section title="Dépenses déductibles">
+        <ul class="mt-8 max-w-xl space-y-4 pl-4">
+          <li class="list-disc">Investissements éducatifs dans le CFA de l'entreprise.</li>
+
+          <li class="list-disc">Projets de formation innovants par apprentissage.</li>
+
+          <li class="list-disc">Subventions en nature (équipements, matériel) au CFA.</li>
+
+          <li class="list-disc">
+            <strong class="text-foreground font-semibold">Plafond :</strong> 10 % de la part principale
+            de l'année précédente.
+          </li>
+        </ul>
+      </Section>
+
+      <Section title="Modalités de paiement">
+        <p class="mt-6 max-w-3xl">
+          Depuis 2023 : Le solde (0,09 %) est collecté par l'Urssaf et versé directement à
+          l'établissement bénéficiaire via la plateforme SOLTéA.
+        </p>
+      </Section>
+    </div>
+  </div>
+</MainLayout>
