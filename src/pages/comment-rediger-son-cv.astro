@@ -1,58 +1,20 @@
 ---
+import { cvAdvices, essentialSections, extraTips, tools } from '@/data';
+
 import { Laptop, Lightbulb, Pin, ScrollText } from '@lucide/astro';
 
+import PageHeader from '@/components/astro/ui/page-header.astro';
+
+import CardSection from '@/components/astro/ui/card-section.astro';
 import ItemList from '@/components/astro/ui/item-list/index.astro';
 import Section from '@/components/astro/ui/section.astro';
 
-import CardSection from '@/components/astro/ui/card-section.astro';
 import Background from '@/layouts/background.astro';
 import MainLayout from '@/layouts/main-layout.astro';
 
 const title = 'Ligue des Alternants | Comment rédiger son CV ?';
 const description =
   "Découvrez nos conseils pratiques pour rédiger un CV efficace et percutant, adapté aux attentes des recruteurs dans le secteur de l'alternance.";
-
-const essentialSections = [
-  {
-    title: 'Informations personnelles',
-    description: 'Nom, prénom, téléphone, email, ville.',
-  },
-  {
-    title: 'Accroche / titre',
-    description: 'Une phrase ou un titre qui résume votre objectif.',
-  },
-  {
-    title: 'Formation',
-    description: 'Diplômes, établissements, dates.',
-  },
-  {
-    title: 'Expériences professionnelles',
-    description: 'Stages, jobs étudiants, missions associatives.',
-  },
-  {
-    title: 'Compétences',
-    description: 'Langues, outils informatiques, soft skills.',
-  },
-  {
-    title: "Centres d'intérêt",
-    description: 'Pertinents et sincères (facultatif).',
-  },
-];
-
-const tools = [
-  {
-    title: 'Google Docs',
-    description: 'Simple et accessible en ligne avec des modèles intégrés.',
-  },
-  {
-    title: 'Canva',
-    description: 'Modèles gratuits, modernes et personnalisables.',
-  },
-  {
-    title: 'LibreOffice',
-    description: 'Une alternative gratuite à Word.',
-  },
-];
 ---
 
 <MainLayout title={title} description={description}>
@@ -60,76 +22,42 @@ const tools = [
     <Background />
 
     <div class="text-muted-foreground container max-w-2xl text-base/7 lg:max-w-7xl">
-      <div class="max-w-3xl">
-        <div>
-          <h1 class="text-4xl text-pretty sm:text-5xl">Comment réaliser un CV impactant ?</h1>
-        </div>
-      </div>
+      <PageHeader title="Comment réaliser un CV impactant ?" />
 
-      <Section title=" Pourquoi soigner son CV ?">
-        <p class="mt-6">
-          Le CV est votre première carte de visite auprès d’un recruteur. Il doit vous représenter
+      <Section title="Pourquoi soigner son CV ?">
+        <p class="mt-6 max-w-3xl">
+          Le CV est votre première carte de visite auprès d'un recruteur. Il doit vous représenter
           fidèlement et donner envie de vous rencontrer pour un entretien.
         </p>
       </Section>
 
       <Section title="Les rubriques indispensables">
+        <p class="mt-6 max-w-3xl">
+          Un bon CV comporte plusieurs parties essentielles. Voici celles à ne pas oublier :
+        </p>
+
         <ItemList items={essentialSections} Icon={Pin} />
       </Section>
 
       <Section title="Les règles d'or pour un bon CV">
-        <ul class="mt-8 max-w-xl space-y-8">
-          <li class="flex gap-x-3">
-            <ScrollText class="text-primary h-[1lh] w-6 flex-none" />
-            <span>
-              Faire tenir sur <strong class="text-foreground font-semibold">une page</strong> pour un
-              profil débutant ou alternant.
-            </span>
-          </li>
+        <p class="mt-6 max-w-3xl">Pour maximiser l'impact de votre CV, suivez ces conseils :</p>
 
-          <li class="flex gap-x-3">
-            <ScrollText class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Être clair, aéré, facile à lire.</span>
-          </li>
-
-          <li class="flex gap-x-3">
-            <ScrollText class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Éviter les fautes d'orthographe.</span>
-          </li>
-
-          <li class="flex gap-x-3">
-            <ScrollText class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Mettre en avant ce qui correspond au poste visé.</span>
-          </li>
-
-          <li class="flex gap-x-3">
-            <ScrollText class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Soigner la présentation : police lisible, pas trop de couleurs fantaisie.</span>
-          </li>
-        </ul>
+        <ItemList items={cvAdvices} Icon={ScrollText} />
       </Section>
 
       <Section title="Avec quels outils créer son CV ?">
+        <p class="mt-6 max-w-3xl">
+          Plusieurs outils gratuits ou accessibles en ligne peuvent vous aider à réaliser un CV
+          professionnel :
+        </p>
+
         <ItemList items={tools} Icon={Laptop} />
       </Section>
 
       <Section title="Astuces supplémentaires">
-        <ul class="mt-8 max-w-xl space-y-8">
-          <li class="flex gap-x-3">
-            <Lightbulb class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Faites relire votre CV par une personne de confiance.</span>
-          </li>
+        <p class="mt-6 max-w-3xl">Pour aller plus loin et éviter les erreurs courantes :</p>
 
-          <li class="flex gap-x-3">
-            <Lightbulb class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Adaptez votre CV à chaque offre : un seul modèle ne suffit pas.</span>
-          </li>
-
-          <li class="flex gap-x-3">
-            <Lightbulb class="text-primary h-[1lh] w-6 flex-none" />
-            <span>Enregistrez votre CV en PDF avant de l’envoyer.</span>
-          </li>
-        </ul>
+        <ItemList items={extraTips} Icon={Lightbulb} />
       </Section>
 
       <CardSection

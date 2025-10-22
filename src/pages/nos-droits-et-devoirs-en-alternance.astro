@@ -1,13 +1,13 @@
 ---
 import { contacts, responsibilities, rights } from '@/data';
 
-import Header from '@/components/astro/our-rights-and-responsibilities/header.astro';
 import RessourcesList from '@/components/astro/our-rights-and-responsibilities/ressources-list.astro';
 
+import CardSection from '@/components/astro/ui/card-section.astro';
 import ItemList from '@/components/astro/ui/item-list/index.astro';
+import PageHeader from '@/components/astro/ui/page-header.astro';
 import Section from '@/components/astro/ui/section.astro';
 
-import CardSection from '@/components/astro/ui/card-section.astro';
 import Background from '@/layouts/background.astro';
 import MainLayout from '@/layouts/main-layout.astro';
 
@@ -21,10 +21,10 @@ const description =
     <Background />
 
     <div class="text-muted-foreground container max-w-2xl text-base/7 lg:max-w-7xl">
-      <Header />
+      <PageHeader title="Nos droits et devoirs en alternance" />
 
       <Section title="Les droits de l'alternant">
-        <p class="mt-6">
+        <p class="mt-6 max-w-3xl">
           En tant qu'alternant ou apprenti, vous êtes salarié de l'entreprise sous contrat
           d'alternance. Vous bénéficiez donc de droits identiques à ceux des autres employés, tout
           en suivant une formation professionnelle :
@@ -34,7 +34,7 @@ const description =
       </Section>
 
       <Section title="Les devoirs de l'alternant">
-        <p class="mt-6">
+        <p class="mt-6 max-w-3xl">
           L'alternance est un engagement professionnel et personnel. Voici les règles à suivre pour
           réussir votre parcours :
         </p>
@@ -43,13 +43,13 @@ const description =
       </Section>
 
       <Section title="En cas de problème">
-        <p class="mt-6">Voici qui contacter en cas de difficulté :</p>
+        <p class="mt-6 max-w-3xl">Voici qui contacter en cas de difficulté :</p>
 
         <ItemList items={contacts} />
       </Section>
 
       <Section title="Ressources officielles">
-        <p class="mt-6">Pour en savoir plus :</p>
+        <p class="mt-6 max-w-3xl">Pour en savoir plus :</p>
 
         <RessourcesList />
       </Section>
