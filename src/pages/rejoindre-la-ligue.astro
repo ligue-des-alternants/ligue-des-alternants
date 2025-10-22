@@ -1,0 +1,53 @@
+---
+import { shareItems } from '@/data/';
+
+import { Share2 } from '@lucide/astro';
+
+import ItemList from '@/components/astro/ui/item-list/index.astro';
+import PageHeader from '@/components/astro/ui/page-header.astro';
+import Section from '@/components/astro/ui/section.astro';
+
+import CardSection from '@/components/astro/ui/card-section.astro';
+
+import Background from '@/layouts/background.astro';
+import MainLayout from '@/layouts/main-layout.astro';
+
+const title = 'Ligue des Alternants | Rejoindre la Ligue';
+const description =
+  'Découvrez comment rejoindre et contribuer à la Ligue des Alternants pour soutenir les jeunes en alternance.';
+---
+
+<MainLayout title={title} description={description}>
+  <div class="page">
+    <Background />
+
+    <div class="text-muted-foreground container max-w-2xl text-base/7 lg:max-w-7xl">
+      <PageHeader title="Rejoindre et contribuer à la Ligue des Alternants" />
+
+      <Section title="Proposer des idées & améliorations">
+        <p class="mt-6 max-w-3xl">
+          Vous avez remarqué une erreur sur le site, une amélioration à suggérer ou une nouvelle
+          section à créer ? Votre regard compte ! Envoyez-nous vos propositions par mail ou en
+          message privée sur nos réseaux sociaux.
+        </p>
+      </Section>
+
+      <Section title="Recommander des entreprises partenaires">
+        <p class="mt-6 max-w-3xl">
+          Vous connaissez une entreprise qui recrute des alternants ou qui pourrait figurer dans
+          notre annuaire ? Parlez-en ! Ensemble, nous élargissons le réseau d'opportunités pour les
+          jeunes.
+        </p>
+      </Section>
+
+      <Section title="Partager le projet autour de vous">
+        <ItemList items={shareItems} Icon={Share2} />
+      </Section>
+
+      <CardSection
+        title="S'abonner & suivre nos réseaux"
+        description="Nous sommes présents sur plusieurs plateformes ! Rejoignez-nous pour rester informé !"
+      />
+    </div>
+  </div>
+</MainLayout>
