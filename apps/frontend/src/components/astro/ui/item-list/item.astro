@@ -1,0 +1,13 @@
+---
+import type { Item } from './types';
+
+const { title, description, Icon } = Astro.props as Item;
+---
+
+<li class="flex gap-x-3">
+  {Icon && <Icon class:list="text-primary h-lh w-6 flex-none" />}
+  <span>
+    {title && <strong class="text-foreground font-semibold">{title}.</strong>}
+    {description}
+  </span>
+</li>

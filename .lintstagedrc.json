@@ -1,4 +1,12 @@
 {
-  "*.{js,jsx,ts,tsx,astro}": ["eslint --cache --fix", "prettier --write --cache"],
-  "*.{json,md,css}": ["prettier --write --cache"]
+  "apps/frontend/**/*.{js,jsx,ts,tsx,astro}": [
+    "pnpm -F frontend exec eslint --cache --fix",
+    "prettier --write --cache"
+  ],
+  "apps/frontend/**/*.{json,md,css}": ["prettier --write --cache"],
+  "apps/server/**/*.{js,ts}": [
+    "pnpm -F server exec eslint --cache --fix",
+    "prettier --write --cache"
+  ],
+  "apps/server/**/*.{json,md}": ["prettier --write --cache"]
 }

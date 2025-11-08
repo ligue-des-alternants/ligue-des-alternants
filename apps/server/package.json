@@ -1,0 +1,54 @@
+{
+  "name": "@ligue-des-alternants/server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "postinstall": "node -e \"const fs = require('fs'); const path = require('path'); const dir = path.join(__dirname, 'public', 'uploads'); if (!fs.existsSync(dir)) { fs.mkdirSync(dir, { recursive: true }); console.log('Created uploads directory'); }\"",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5.30.1",
+    "@strapi/plugin-users-permissions": "5.30.1",
+    "@strapi/strapi": "5.30.1",
+    "better-sqlite3": "^12.4.1",
+    "pg": "^8.16.3",
+    "pg-connection-string": "^2.9.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "@ligue-des-alternants/eslint-config": "workspace:*",
+    "@ligue-des-alternants/prettier-config": "workspace:*",
+    "@ligue-des-alternants/typescript-config": "workspace:*",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5"
+  },
+  "prettier": "@ligue-des-alternants/prettier-config",
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "9f892831-ee29-4c5b-bf4b-07e935e8eb00",
+    "installId": "dbca660a6a994ac92d9b804a84b9ebd11ca5855b08ef056f10e80e6afcd4ed34"
+  }
+}

@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 jobs:
-  lint-and-format:
-    name: Lint & Format Check
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -28,17 +28,23 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Cache ESLint
+        uses: actions/cache@v4
+        with:
+          path: |
+            apps/frontend/.eslintcache
+            apps/server/.eslintcache
+          key: eslint-${{ runner.os }}-${{ hashFiles('**/eslint.config.mjs', '**/package.json') }}
+          restore-keys: |
+            eslint-${{ runner.os }}-
 
       - name: Run ESLint
         run: pnpm run lint
 
-      - name: Check code formatting
-        run: pnpm run format:check
-
-  build:
-    name: Build
+  format:
+    name: Format Check
     runs-on: ubuntu-latest
-    needs: lint-and-format
 
     steps:
       - name: Checkout code
@@ -58,5 +64,66 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build project
-        run: pnpm run build
+      - name: Cache Prettier
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/prettier
+          key: prettier-${{ runner.os }}-${{ hashFiles('**/.prettierrc.json', '**/package.json') }}
+          restore-keys: |
+            prettier-${{ runner.os }}-
+
+      - name: Check code formatting
+        run: pnpm run format:check
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run TypeScript type checking
+        run: pnpm run typecheck
+
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    needs: [lint, format, typecheck]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend only
+        run: pnpm run build:front
+        env:
+          STRAPI_URL: ${{ secrets.STRAPI_URL }}

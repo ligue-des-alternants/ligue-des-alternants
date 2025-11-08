@@ -1,143 +1,169 @@
-# Ligue des Alternants - Frontend
+# Ligue des Alternants - Monorepo
 
-Site pour la Ligue des Alternants, construite avec Astro, React, et Tailwind CSS.
+Monorepo contenant le frontend (Astro) et le backend (Strapi v5) de la Ligue des Alternants.
 
-## 🚀 Stack Technique
+## 📁 Structure du projet
 
-- **[Astro](https://astro.build)** - Framework web moderne
-- **[React](https://react.dev)** - Composants interactifs
-- **[Tailwind CSS](https://tailwindcss.com)** - Styling utilitaire
-- **[TypeScript](https://www.typescriptlang.org/)** - Typage statique
+```
+ligue-des-alternants/
+├── apps/
+│   ├── frontend/          # Application Astro + React
+│   └── server/            # Backend Strapi v5
+├── packages/
+│   ├── eslint-config/     # Configuration ESLint partagée
+│   ├── prettier-config/   # Configuration Prettier partagée
+│   └── typescript-config/ # Configurations TypeScript partagées
+├── .husky/                # Git hooks
+├── .github/               # GitHub workflows
+├── .prettierignore        # Fichiers ignorés par Prettier
+├── .lintstagedrc.json     # Configuration lint-staged
+├── commitlint.config.ts   # Configuration commitlint
+├── pnpm-workspace.yaml    # Configuration workspace pnpm
+└── package.json           # Scripts et dépendances racine
+```
 
-## 📋 Prérequis
+## 🚀 Démarrage rapide
 
-- **Node.js** 18+
-- **pnpm** (gestionnaire de paquets)
+### Prérequis
 
-## 🛠️ Installation
+- Node.js >= 18.0.0
+- pnpm >= 8.0.0
+
+### Installation
 
 ```bash
-# Cloner le projet
-git clone <repository-url>
-cd lda-frontend
+# Cloner le repository
+git clone <repo-url>
+cd ligue-des-alternants
 
 # Installer les dépendances
 pnpm install
 ```
 
-## 🏃 Scripts Disponibles
-
 ### Développement
 
 ```bash
-# Lancer le serveur de développement
+# Lancer frontend + backend en parallèle
 pnpm dev
-# → http://localhost:4321
+
+# Lancer uniquement le frontend
+pnpm dev:front
+
+# Lancer uniquement le backend
+pnpm dev:server
 ```
 
-### Build & Preview
+Le frontend sera accessible sur `http://localhost:4321` et le backend sur `http://localhost:1337`.
+
+## 🏗️ Build
 
 ```bash
-# Construire pour la production
+# Build complet
 pnpm build
 
-# Prévisualiser le build de production
-pnpm preview
+# Build frontend uniquement
+pnpm build:front
+
+# Build backend uniquement
+pnpm build:server
 ```
 
-### Linting & Formatage
+## ✨ Qualité de code
+
+### Linting
 
 ```bash
-# Vérifier le code avec ESLint
+# Lint tout le monorepo
 pnpm lint
 
-# Corriger automatiquement les erreurs ESLint
+# Lint avec auto-fix
 pnpm lint:fix
+```
 
-# Formater le code avec Prettier
+### Formatage
+
+```bash
+# Formater tous les fichiers
 pnpm format
 
-# Vérifier le formatage sans modifier
+# Vérifier le formatage
 pnpm format:check
 ```
 
-## 🎯 Git Hooks & Qualité du Code
-
-Ce projet utilise **Husky**, **lint-staged** et **commitlint** pour garantir la qualité du code.
-
-### Hooks Automatiques
-
-#### Pre-commit
-
-Avant chaque commit, **lint-staged** exécute automatiquement :
-
-- ✅ **ESLint** sur les fichiers `.js`, `.ts`, `.tsx`, `.astro`
-- ✅ **Prettier** sur tous les fichiers stagés
-- ✅ Correction automatique des erreurs
-
-#### Commit-msg
-
-Les messages de commit doivent suivre la convention [Conventional Commits](https://www.conventionalcommits.org/).
-
-**Format requis :**
-
-```
-<type>(<scope>): <subject>
-```
-
-**Exemples valides :**
+### Type checking
 
 ```bash
-feat: add user authentication
-fix(ui): correct button alignment
-docs: update installation guide
-chore(deps): upgrade dependencies
+# Vérifier TypeScript sur tout le monorepo
+pnpm typecheck
 ```
 
-**Types autorisés :** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
+## 🔧 Technologies
 
-📖 Voir [COMMIT_CONVENTIONS.md](./.github/COMMIT_CONVENTIONS.md) pour plus de détails.
+### Frontend
 
-### Désactiver temporairement les hooks (non recommandé)
+- **Astro** 5.x - Framework web
+- **React** 19.x - Composants interactifs
+- **Tailwind CSS** 4.x - Styling
+- **TypeScript** - Type safety
+
+### Backend
+
+- **Strapi** 5.x - Headless CMS
+- **SQLite** - Base de données (dev)
+- **TypeScript** - Type safety
+
+### Outils de développement
+
+- **pnpm** - Gestionnaire de packages
+- **ESLint** - Linting JavaScript/TypeScript
+- **Prettier** - Formatage de code
+- **Husky** - Git hooks
+- **lint-staged** - Lint des fichiers modifiés
+- **commitlint** - Validation des messages de commit
+
+## 📝 Convention de commits
+
+Ce projet utilise [Conventional Commits](https://www.conventionalcommits.org/). Format :
+
+```
+type(scope?): description
+
+[body optionnel]
+[footer optionnel]
+```
+
+Types acceptés :
+
+- `feat` - Nouvelle fonctionnalité
+- `fix` - Correction de bug
+- `docs` - Documentation
+- `style` - Formatage, point-virgules manquants, etc.
+- `refactor` - Refactorisation du code
+- `perf` - Amélioration des performances
+- `test` - Ajout de tests
+- `chore` - Tâches de maintenance
+
+Exemples :
 
 ```bash
-# Bypass pre-commit et commit-msg
-git commit --no-verify -m "message"
+git commit -m "feat: ajoute la page actualités"
+git commit -m "fix(frontend): corrige le responsive du header"
+git commit -m "docs: met à jour le README"
 ```
 
-## CI/CD
+## 🔒 Pre-commit hooks
 
-Le projet utilise **GitHub Actions** pour automatiser les vérifications de qualité.
+Les hooks Git suivants sont configurés :
 
-### Workflows
+1. **pre-commit** : Exécute lint-staged
+   - Lint des fichiers JS/TS/Astro modifiés
+   - Formatage automatique des fichiers modifiés
 
-#### CI (`ci.yml`)
+2. **commit-msg** : Vérifie le format du message avec commitlint
 
-Déclenché à chaque push sur `main` et sur les pull requests :
+## 🤝 Contribution
 
-1. **Lint & Format Check**
-   - ✅ Vérifie le code avec ESLint
-   - ✅ Vérifie le formatage avec Prettier
-2. **Build**
-   - ✅ Construit le projet
-   - ✅ Upload les artifacts (dist/)
-
-#### Commitlint (`commitlint.yml`)
-
-Déclenché sur les pull requests :
-
-- ✅ Valide tous les messages de commit de la PR
-- ✅ Garantit le respect des Conventional Commits
-
-## 🔧 Configuration VS Code
-
-Le projet inclut des configurations VS Code recommandées :
-
-### Extensions Recommandées
-
-Lors de l'ouverture du projet, VS Code proposera d'installer :
-
-- Astro Language Support
-- ESLint
-- Prettier
-- Tailwind CSS IntelliSense
+1. Créer une branche depuis `main`
+2. Faire vos modifications
+3. Commit avec les conventions
+4. Push et créer une Pull Request

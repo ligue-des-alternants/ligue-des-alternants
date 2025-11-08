@@ -1,27 +1,61 @@
-# build output
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
 dist/
-# generated types
+build/
+.next/
+out/
 .astro/
 
-# dependencies
-node_modules/
+# Cache
+.cache/
+.tmp/
+.strapi/
+.eslintcache
+.stylelintcache
 
-# logs
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# cache files
-.eslintcache
-node_modules/.cache/
-
-# environment variables
+# Environment variables
 .env
+.env.local
+.env.*.local
+.env.test
 .env.production
 
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
+# IDE
+.vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Strapi specific
+apps/server/public/uploads/
+apps/server/.strapi-updater.json
+apps/server/.strapi/
+
+# Ignore duplicate configs in apps (use root configs)
+apps/*/pnpm-lock.yaml
+apps/*/pnpm-workspace.yaml
+apps/*/.prettierrc*
+apps/*/.prettierignore
+
+# Generated types
+apps/server/types/generated/
+
+# Test coverage
+coverage/
