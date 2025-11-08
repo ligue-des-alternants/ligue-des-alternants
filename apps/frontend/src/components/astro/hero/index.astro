@@ -3,10 +3,10 @@ import HeroContent from './hero-content.astro';
 import HeroImage from './hero-image.astro';
 ---
 
-<div class="from-secondary relative isolate overflow-hidden bg-gradient-to-b">
+<div class="from-secondary relative isolate overflow-hidden bg-linear-to-b">
   <div
     aria-hidden="true"
-    class="bg-background absolute inset-y-0 right-1/2 -z-10 -me-96 w-[200%] origin-top-right -skew-x-[30deg] shadow-xl sm:-me-80 lg:-me-96"
+    class="bg-background absolute inset-y-0 right-1/2 -z-10 -me-96 w-[200%] origin-top-right -skew-x-30 shadow-xl sm:-me-80 lg:-me-96"
   >
   </div>
 
@@ -19,6 +19,5 @@ import HeroImage from './hero-image.astro';
     </div>
   </div>
 
-  <div class="from-background absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t sm:h-32">
-  </div>
+  <div class="from-background absolute inset-x-0 bottom-0 -z-10 h-24 bg-linear-to-t sm:h-32"></div>
 </div>
