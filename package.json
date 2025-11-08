@@ -5,13 +5,27 @@
     "dev": "pnpm -r --parallel dev",
     "dev:front": "pnpm -F frontend dev",
     "dev:server": "pnpm -F server dev",
+    "build": "pnpm -r build",
+    "build:front": "pnpm -F frontend build",
+    "build:server": "pnpm -F server build",
+    "lint": "pnpm -r --parallel lint",
+    "lint:fix": "pnpm -r --parallel lint:fix",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "typecheck": "pnpm -r --parallel typecheck",
     "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/types": "^20.0.0",
+    "@ligue-des-alternants/prettier-config": "workspace:*",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.4"
-  }
+    "lint-staged": "^16.2.4",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.1"
+  },
+  "prettier": "@ligue-des-alternants/prettier-config"
 }

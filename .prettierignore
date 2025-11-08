@@ -25,12 +25,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
 # Environment variables
 .env
 .env.local
 .env.*.local
-.env.test
-.env.production
 
 # IDE
 .vscode/
@@ -46,13 +49,6 @@ Thumbs.db
 # Strapi specific
 apps/server/public/uploads/
 apps/server/.strapi-updater.json
-apps/server/.strapi/
-
-# Ignore duplicate configs in apps (use root configs)
-apps/*/pnpm-lock.yaml
-apps/*/pnpm-workspace.yaml
-apps/*/.prettierrc*
-apps/*/.prettierignore
 
 # Generated types
 apps/server/types/generated/
