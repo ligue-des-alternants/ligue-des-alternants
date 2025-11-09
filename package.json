@@ -8,6 +8,7 @@
     "build": "pnpm -r build",
     "build:front": "pnpm -F frontend build",
     "build:server": "pnpm -F server build",
+    "start": "pnpm -F server start",
     "lint": "pnpm -r --parallel lint",
     "lint:fix": "pnpm -r --parallel lint:fix",
     "format": "prettier --write --cache .",
