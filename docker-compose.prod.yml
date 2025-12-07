@@ -33,9 +33,7 @@ services:
 
   # Strapi CMS Backend
   strapi:
-    build:
-      context: .
-      dockerfile: apps/server/Dockerfile
+    image: lda-strapi:latest
     container_name: lda-strapi
     restart: always
     environment:
@@ -71,11 +69,7 @@ services:
 
   # Astro Frontend (built static files served by nginx)
   frontend:
-    build:
-      context: .
-      dockerfile: apps/frontend/Dockerfile
-      args:
-        STRAPI_URL: ${STRAPI_URL:-http://strapi:1337}
+    image: lda-frontend:latest
     container_name: lda-frontend
     restart: always
     networks:
