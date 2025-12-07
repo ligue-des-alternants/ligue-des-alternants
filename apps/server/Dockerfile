@@ -47,8 +47,6 @@ COPY --from=builder --chown=strapi:strapi /app/apps/server/dist ./dist
 COPY --from=builder --chown=strapi:strapi /app/apps/server/public ./public
 COPY --from=builder --chown=strapi:strapi /app/apps/server/config ./config
 COPY --from=builder --chown=strapi:strapi /app/apps/server/src ./src
-# Copy the admin build (required for Strapi v5)
-COPY --from=builder --chown=strapi:strapi /app/apps/server/.cache ./.cache
 
 # Create a standalone tsconfig.json (without workspace dependency)
 RUN echo '{"compilerOptions":{"module":"CommonJS","moduleResolution":"Node","lib":["ES2020"],"target":"ES2019","strict":false,"skipLibCheck":true,"forceConsistentCasingInFileNames":true,"esModuleInterop":true,"resolveJsonModule":true,"outDir":"dist","rootDir":"."},"include":["./**/*.ts","./**/*.js","src/**/*.json"],"exclude":["node_modules/","build/","dist/",".cache/"]}' > tsconfig.json
