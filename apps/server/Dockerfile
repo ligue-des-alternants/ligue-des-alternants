@@ -40,10 +40,9 @@ RUN adduser --system --uid 1001 strapi
 
 # Copy package files for production install
 COPY --from=builder /app/apps/server/package.json ./package.json
-COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
-# Install production dependencies only (not using workspace, direct install)
-RUN pnpm install --prod --frozen-lockfile
+# Install production dependencies only (without frozen-lockfile since we're outside workspace)
+RUN pnpm install --prod
 
 # Copy built application
 COPY --from=builder --chown=strapi:strapi /app/apps/server/dist ./dist
