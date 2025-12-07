@@ -1,4 +1,4 @@
-// import type { Core } from '@strapi/strapi';
+import type { Core } from '@strapi/strapi';
 
 export default {
   /**
@@ -16,5 +16,45 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    // Configure public permissions for the News API
+    const publicRole = await strapi
+      .query('plugin::users-permissions.role')
+      .findOne({ where: { type: 'public' } });
+
+    if (publicRole) {
+      // Get current permissions for the public role
+      const existingPermissions = await strapi
+        .query('plugin::users-permissions.permission')
+        .findMany({
+          where: {
+            role: publicRole.id,
+            action: {
+              $in: ['api::news-item.news-item.find', 'api::news-item.news-item.findOne'],
+            },
+          },
+        });
+
+      // Only create permissions if they don't exist
+      if (existingPermissions.length < 2) {
+        const permissionsToCreate = [
+          'api::news-item.news-item.find',
+          'api::news-item.news-item.findOne',
+        ];
+
+        for (const action of permissionsToCreate) {
+          const exists = existingPermissions.some((p) => p.action === action);
+          if (!exists) {
+            await strapi.query('plugin::users-permissions.permission').create({
+              data: {
+                action,
+                role: publicRole.id,
+              },
+            });
+            console.log(`✅ Created public permission for: ${action}`);
+          }
+        }
+      }
+    }
+  },
 };

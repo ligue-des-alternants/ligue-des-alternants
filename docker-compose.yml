@@ -1,0 +1,87 @@
+# ================================
+# Docker Compose - Development
+# ================================
+# Usage: docker compose up
+# Hot-reload enabled for both frontend and backend
+
+services:
+  # PostgreSQL Database (same as production for consistency)
+  postgres:
+    image: postgres:16-alpine
+    container_name: lda-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-strapi}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-strapi_dev_password}
+      POSTGRES_DB: ${DATABASE_NAME:-strapi}
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USERNAME:-strapi}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Strapi CMS Backend
+  strapi:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile.dev
+    container_name: lda-strapi-dev
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      NODE_ENV: development
+      APP_KEYS: ${APP_KEYS:-devKey1,devKey2,devKey3,devKey4}
+      API_TOKEN_SALT: ${API_TOKEN_SALT:-devApiTokenSalt}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:-devAdminJwtSecret}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:-devTransferTokenSalt}
+      JWT_SECRET: ${JWT_SECRET:-devJwtSecret}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-devEncryptionKey12345678901234}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME:-strapi}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-strapi}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-strapi_dev_password}
+    volumes:
+      # Mount source code for hot-reload
+      - ./apps/server/src:/app/apps/server/src:cached
+      - ./apps/server/config:/app/apps/server/config:cached
+      - ./apps/server/database:/app/apps/server/database:cached
+      - ./apps/server/public/uploads:/app/apps/server/public/uploads
+      # Mount types for development
+      - ./apps/server/types:/app/apps/server/types:cached
+    ports:
+      - '1337:1337'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Astro Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile.dev
+    container_name: lda-frontend-dev
+    restart: unless-stopped
+    environment:
+      STRAPI_URL: http://strapi:1337
+    volumes:
+      # Mount source code for hot-reload
+      - ./apps/frontend/src:/app/apps/frontend/src:cached
+      - ./apps/frontend/public:/app/apps/frontend/public:cached
+      - ./apps/frontend/astro.config.mjs:/app/apps/frontend/astro.config.mjs:cached
+      - ./apps/frontend/tailwind.config.mjs:/app/apps/frontend/tailwind.config.mjs:cached
+      - ./apps/frontend/tsconfig.json:/app/apps/frontend/tsconfig.json:cached
+    ports:
+      - '4321:4321'
+    depends_on:
+      - strapi
+
+volumes:
+  postgres_data_dev:
+    name: lda-postgres-dev

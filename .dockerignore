@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Build outputs
+dist/
+build/
+
+# Cache
+.cache/
+.tmp/
+.strapi/
+.eslintcache
+.stylelintcache
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Tests
+coverage/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Strapi uploads (managed by volumes)
+apps/server/public/uploads/
+
+# Development files
+docker-compose.yml
+*.dev
+Dockerfile.dev
+
+# Scripts not needed in image
+scripts/setup-vps.sh
+scripts/backup.sh
+scripts/restore.sh
+scripts/setup-ssl.sh
