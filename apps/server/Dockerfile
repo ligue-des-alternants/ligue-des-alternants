@@ -2,8 +2,8 @@
 # Strapi Dockerfile - Multi-stage build
 # ================================
 
-# Stage 1: Dependencies
-FROM node:20-alpine AS deps
+# Stage 1: Builder
+FROM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -13,37 +13,22 @@ RUN corepack enable && corepack prepare pnpm@10 --activate
 # Copy workspace configuration
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY packages/ ./packages/
-COPY apps/server/package.json ./apps/server/
-
-# Install dependencies
-RUN pnpm install --frozen-lockfile --filter @ligue-des-alternants/server...
-
-# Stage 2: Builder
-FROM node:20-alpine AS builder
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-
-RUN corepack enable && corepack prepare pnpm@10 --activate
-
-# Copy dependencies from deps stage
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages ./packages
-COPY --from=deps /app/apps/server/node_modules ./apps/server/node_modules
-
-# Copy source code
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY apps/server/ ./apps/server/
 
-# Build Strapi
+# Install all dependencies and build
+RUN pnpm install --frozen-lockfile --filter @ligue-des-alternants/server...
 WORKDIR /app/apps/server
 ENV NODE_ENV=production
 RUN pnpm build
 
-# Stage 3: Production
+# Stage 2: Production
 FROM node:20-alpine AS runner
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
+
+# Install pnpm for production install
+RUN corepack enable && corepack prepare pnpm@10 --activate
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
@@ -53,16 +38,19 @@ ENV PORT=1337
 RUN addgroup --system --gid 1001 strapi
 RUN adduser --system --uid 1001 strapi
 
-# Copy built application from apps/server
+# Copy package files for production install
+COPY --from=builder /app/apps/server/package.json ./package.json
+COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
+
+# Install production dependencies only (not using workspace, direct install)
+RUN pnpm install --prod --frozen-lockfile
+
+# Copy built application
 COPY --from=builder --chown=strapi:strapi /app/apps/server/dist ./dist
 COPY --from=builder --chown=strapi:strapi /app/apps/server/public ./public
 COPY --from=builder --chown=strapi:strapi /app/apps/server/config ./config
 COPY --from=builder --chown=strapi:strapi /app/apps/server/src ./src
-COPY --from=builder --chown=strapi:strapi /app/apps/server/package.json ./package.json
-
-# Copy node_modules (both root and server-specific)
-COPY --from=builder --chown=strapi:strapi /app/node_modules ./node_modules
-COPY --from=builder --chown=strapi:strapi /app/apps/server/node_modules ./node_modules
+COPY --from=builder --chown=strapi:strapi /app/apps/server/tsconfig.json ./tsconfig.json
 
 # Create uploads directory
 RUN mkdir -p public/uploads && chown -R strapi:strapi public/uploads
