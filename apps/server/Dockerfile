@@ -53,9 +53,16 @@ ENV PORT=1337
 RUN addgroup --system --gid 1001 strapi
 RUN adduser --system --uid 1001 strapi
 
-# Copy built application
-COPY --from=builder --chown=strapi:strapi /app/apps/server ./
+# Copy built application from apps/server
+COPY --from=builder --chown=strapi:strapi /app/apps/server/dist ./dist
+COPY --from=builder --chown=strapi:strapi /app/apps/server/public ./public
+COPY --from=builder --chown=strapi:strapi /app/apps/server/config ./config
+COPY --from=builder --chown=strapi:strapi /app/apps/server/src ./src
+COPY --from=builder --chown=strapi:strapi /app/apps/server/package.json ./package.json
+
+# Copy node_modules (both root and server-specific)
 COPY --from=builder --chown=strapi:strapi /app/node_modules ./node_modules
+COPY --from=builder --chown=strapi:strapi /app/apps/server/node_modules ./node_modules
 
 # Create uploads directory
 RUN mkdir -p public/uploads && chown -R strapi:strapi public/uploads
@@ -64,4 +71,4 @@ USER strapi
 
 EXPOSE 1337
 
-CMD ["node_modules/.bin/strapi", "start"]
+CMD ["node", "node_modules/@strapi/strapi/bin/strapi.js", "start"]
