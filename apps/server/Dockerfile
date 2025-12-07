@@ -27,9 +27,6 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-# Install pnpm for production install
-RUN corepack enable && corepack prepare pnpm@10 --activate
-
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=1337
@@ -38,11 +35,12 @@ ENV PORT=1337
 RUN addgroup --system --gid 1001 strapi
 RUN adduser --system --uid 1001 strapi
 
-# Copy package files for production install
-COPY --from=builder /app/apps/server/package.json ./package.json
+# Copy package files for production install (remove devDependencies with workspace refs)
+COPY --from=builder /app/apps/server/package.json ./package.json.orig
+RUN node -e "const p=require('./package.json.orig'); delete p.devDependencies; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2));"
 
-# Install production dependencies only (without frozen-lockfile since we're outside workspace)
-RUN pnpm install --prod
+# Install production dependencies using npm (avoids pnpm workspace issues)
+RUN npm install --omit=dev
 
 # Copy built application
 COPY --from=builder --chown=strapi:strapi /app/apps/server/dist ./dist
