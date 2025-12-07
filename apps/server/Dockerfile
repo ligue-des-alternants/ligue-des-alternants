@@ -47,7 +47,9 @@ COPY --from=builder --chown=strapi:strapi /app/apps/server/dist ./dist
 COPY --from=builder --chown=strapi:strapi /app/apps/server/public ./public
 COPY --from=builder --chown=strapi:strapi /app/apps/server/config ./config
 COPY --from=builder --chown=strapi:strapi /app/apps/server/src ./src
-COPY --from=builder --chown=strapi:strapi /app/apps/server/tsconfig.json ./tsconfig.json
+
+# Create a standalone tsconfig.json (without workspace dependency)
+RUN echo '{"compilerOptions":{"module":"CommonJS","moduleResolution":"Node","lib":["ES2020"],"target":"ES2019","strict":false,"skipLibCheck":true,"forceConsistentCasingInFileNames":true,"esModuleInterop":true,"resolveJsonModule":true,"outDir":"dist","rootDir":"."},"include":["./**/*.ts","./**/*.js","src/**/*.json"],"exclude":["node_modules/","build/","dist/",".cache/"]}' > tsconfig.json
 
 # Create uploads directory
 RUN mkdir -p public/uploads && chown -R strapi:strapi public/uploads
