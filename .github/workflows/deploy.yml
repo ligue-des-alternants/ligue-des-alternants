@@ -141,11 +141,11 @@ jobs:
 
             # Stop existing containers
             echo "Stopping existing containers..."
-            docker compose -f docker-compose.prod.yml down || true
+            docker compose -f docker-compose.prod.yml --env-file .env.production down || true
 
             # Start new containers
             echo "Starting new containers..."
-            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml --env-file .env.production up -d
 
             # Wait for services to be healthy
             echo "Waiting for services to start..."
