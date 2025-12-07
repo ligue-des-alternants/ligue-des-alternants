@@ -117,14 +117,14 @@ jobs:
         run: |
           # Create directory structure on VPS
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /opt/ligue-alternants/nginx/conf.d /opt/ligue-alternants/scripts"
-          
+
           # Copy docker-compose file
           scp docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/ligue-alternants/
-          
+
           # Copy nginx configuration
           scp nginx/nginx.conf ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/ligue-alternants/nginx/
           scp nginx/frontend.conf ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/ligue-alternants/nginx/conf.d/
-          
+
           # Copy scripts
           scp scripts/*.sh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/ligue-alternants/scripts/
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "chmod +x /opt/ligue-alternants/scripts/*.sh"
