@@ -1,0 +1,173 @@
+name: Deploy
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+
+  # Auto-deploy on merge to main (optional - uncomment to enable)
+  # push:
+  #   branches: [main]
+
+jobs:
+  # Run CI checks first
+  ci:
+    name: CI Checks
+    uses: ./.github/workflows/ci.yml
+
+  # Build and push Docker images
+  build:
+    name: Build Images
+    runs-on: ubuntu-latest
+    needs: [ci]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Strapi image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/server/Dockerfile
+          push: false
+          tags: lda-strapi:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/strapi-image.tar
+
+      - name: Build Frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          push: false
+          tags: lda-frontend:latest
+          build-args: |
+            STRAPI_URL=${{ secrets.STRAPI_URL }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/frontend-image.tar
+
+      - name: Upload Strapi image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: strapi-image
+          path: /tmp/strapi-image.tar
+          retention-days: 1
+
+      - name: Upload Frontend image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-image
+          path: /tmp/frontend-image.tar
+          retention-days: 1
+
+  # Deploy to VPS
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: [build]
+    environment:
+      name: production
+      url: https://liguedesalternants.fr
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Strapi image
+        uses: actions/download-artifact@v4
+        with:
+          name: strapi-image
+          path: /tmp
+
+      - name: Download Frontend image
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-image
+          path: /tmp
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy Docker images to VPS
+        run: |
+          scp /tmp/strapi-image.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/
+          scp /tmp/frontend-image.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/
+
+      - name: Copy deployment files to VPS
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            --exclude='.env.production' \
+            docker-compose.prod.yml \
+            nginx/ \
+            scripts/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/ligue-alternants/
+
+      - name: Deploy on VPS
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            set -e
+            cd /opt/ligue-alternants
+
+            # Load Docker images
+            echo "Loading Docker images..."
+            docker load -i /tmp/strapi-image.tar
+            docker load -i /tmp/frontend-image.tar
+
+            # Clean up image tarballs
+            rm -f /tmp/strapi-image.tar /tmp/frontend-image.tar
+
+            # Stop existing containers
+            echo "Stopping existing containers..."
+            docker compose -f docker-compose.prod.yml down || true
+
+            # Start new containers
+            echo "Starting new containers..."
+            docker compose -f docker-compose.prod.yml up -d
+
+            # Wait for services to be healthy
+            echo "Waiting for services to start..."
+            sleep 10
+
+            # Health check
+            echo "Running health checks..."
+            curl -f http://localhost:1337/_health || echo "Strapi health check failed"
+            curl -f http://localhost:80 || echo "Frontend health check failed"
+
+            # Clean up old Docker images
+            echo "Cleaning up old images..."
+            docker image prune -f
+
+            echo "Deployment completed successfully!"
+          ENDSSH
+
+      - name: Deployment notification
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment to production succeeded!"
+          else
+            echo "❌ Deployment to production failed!"
+          fi

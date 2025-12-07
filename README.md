@@ -2,6 +2,16 @@
 
 Monorepo contenant le frontend (Astro) et le backend (Strapi v5) de la Ligue des Alternants.
 
+🌐 **Site** : [liguedesalternants.fr](https://liguedesalternants.fr)
+
+## 📚 Documentation
+
+| Document                             | Description                                  |
+| ------------------------------------ | -------------------------------------------- |
+| [Guide CMS](docs/GUIDE_CMS.md)       | Guide d'utilisation de Strapi pour le client |
+| [Déploiement](docs/DEPLOYMENT.md)    | Guide de déploiement sur VPS                 |
+| [Développement](docs/DEVELOPMENT.md) | Guide de développement avec Docker           |
+
 ## 📁 Structure du projet
 
 ```
@@ -40,7 +50,20 @@ cd ligue-des-alternants
 pnpm install
 ```
 
-### Développement
+### Développement avec Docker (recommandé)
+
+```bash
+# Copier le fichier d'environnement
+cp .env.example .env
+
+# Lancer l'environnement Docker
+docker compose up
+```
+
+- Frontend : http://localhost:4321 (hot-reload)
+- Strapi Admin : http://localhost:1337/admin
+
+### Développement sans Docker
 
 ```bash
 # Lancer frontend + backend en parallèle
@@ -109,8 +132,16 @@ pnpm typecheck
 ### Backend
 
 - **Strapi** 5.x - Headless CMS
-- **SQLite** - Base de données (dev)
+- **PostgreSQL** - Base de données (production)
+- **SQLite** - Base de données (dev sans Docker)
 - **TypeScript** - Type safety
+
+### Infrastructure
+
+- **Docker** - Conteneurisation
+- **nginx** - Reverse proxy
+- **Certbot** - Certificats SSL Let's Encrypt
+- **GitHub Actions** - CI/CD
 
 ### Outils de développement
 
@@ -167,3 +198,19 @@ Les hooks Git suivants sont configurés :
 2. Faire vos modifications
 3. Commit avec les conventions
 4. Push et créer une Pull Request
+
+## 🚀 Déploiement
+
+Le projet est déployé sur un VPS Ubuntu via Docker. Voir [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) pour les détails.
+
+### Déploiement automatique
+
+Le workflow GitHub Actions déploie automatiquement après un merge sur `main` (si activé) ou manuellement via l'onglet Actions.
+
+### Déploiement manuel
+
+```bash
+# Sur le VPS
+cd /opt/ligue-alternants
+docker compose -f docker-compose.prod.yml up -d
+```

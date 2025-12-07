@@ -1,0 +1,139 @@
+# ================================
+# Docker Compose - Production
+# ================================
+# Usage: docker compose -f docker-compose.prod.yml up -d
+# For VPS deployment at liguedesalternants.fr
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: lda-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lda-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USERNAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # Memory limits for 2GB VPS
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # Strapi CMS Backend
+  strapi:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: lda-strapi
+    restart: always
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      NODE_ENV: production
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      JWT_SECRET: ${JWT_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - strapi_uploads:/app/public/uploads
+    networks:
+      - lda-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Memory limits for 2GB VPS
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+        reservations:
+          memory: 384M
+
+  # Astro Frontend (built static files served by nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        STRAPI_URL: ${STRAPI_URL:-http://strapi:1337}
+    container_name: lda-frontend
+    restart: always
+    networks:
+      - lda-network
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: lda-nginx
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot_webroot:/var/www/certbot:ro
+      - certbot_certs:/etc/letsencrypt:ro
+    networks:
+      - lda-network
+    depends_on:
+      - strapi
+      - frontend
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+
+  # Certbot for SSL certificates
+  certbot:
+    image: certbot/certbot
+    container_name: lda-certbot
+    volumes:
+      - certbot_webroot:/var/www/certbot
+      - certbot_certs:/etc/letsencrypt
+    # Run certificate renewal
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - lda-network
+
+networks:
+  lda-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    name: lda-postgres-data
+  strapi_uploads:
+    name: lda-strapi-uploads
+  certbot_webroot:
+    name: lda-certbot-webroot
+  certbot_certs:
+    name: lda-certbot-certs
