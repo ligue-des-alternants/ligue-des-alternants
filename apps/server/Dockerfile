@@ -37,7 +37,7 @@ RUN adduser --system --uid 1001 strapi
 
 # Copy package files for production install (remove devDependencies with workspace refs)
 COPY --from=builder /app/apps/server/package.json ./package.json.orig
-RUN node -e "const p=require('./package.json.orig'); delete p.devDependencies; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2));"
+RUN node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('./package.json.orig','utf8')); delete p.devDependencies; fs.writeFileSync('package.json', JSON.stringify(p, null, 2));"
 
 # Install production dependencies using npm (avoids pnpm workspace issues)
 RUN npm install --omit=dev
