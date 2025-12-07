@@ -128,4 +128,5 @@ jobs:
       - name: Build frontend only
         run: pnpm run build:front
         env:
-          STRAPI_URL: ${{ secrets.STRAPI_URL }}
+          # Use secret if available, otherwise use placeholder for CI validation
+          STRAPI_URL: ${{ secrets.STRAPI_URL || 'https://liguedesalternants.fr' }}
